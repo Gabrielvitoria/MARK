@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Config, Nav, Platform } from 'ionic-angular';
+import { Config, Nav, Platform, ToastController } from 'ionic-angular';
 
 import { FirstRunPage } from '../pages';
 import { Settings } from '../providers';
@@ -45,18 +45,23 @@ export class MyApp {
     { title: 'Menu', component: 'MenuPage' },
     { title: 'Settings', component: 'SettingsPage' },
     { title: 'Search', component: 'SearchPage' },
-    { title: 'Products', componet:'HomePage'}
+    { title: 'Products', componet:'ProductsPage'}
   ]
 
-  constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen, dbProvider: DatabaseProvider) {
+  constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen, dbProvider: DatabaseProvider, private toast: ToastController) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       dbProvider.createDatabase()
-      .then(()=>  { })
-      .catch(()=> { })
+      .then(()=>  {
+        this.toast.create({ message: 'Ok!. Dados iniciais carregados.', duration: 3000, position: 'botton' }).present();
+       })
+      .catch(()=> { 
+
+        this.toast.create({ message: 'Erro!. Dados iniciais não carregados.', duration: 3000, position: 'botton' }).present();
+      })
     });
     this.initTranslate();
   }
