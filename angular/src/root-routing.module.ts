@@ -12,7 +12,13 @@ const routes: Routes = [
         path: 'app',
         loadChildren: 'app/app.module#AppModule', //Lazy load account module
         data: { preload: true }
+    },
+    {
+        path: 'site',
+        loadChildren: 'site/site.module#SiteModule', //Lazy site module
+        data: { preload: true }
     }
+
 ];
 
 @NgModule({
